@@ -22,9 +22,10 @@ public class CAOS {
 	ArrayList<String> catlist = new ArrayList<String>();
 	ArrayList<Item> itemlist = new ArrayList<Item>();
 	ArrayList<Useracc> userlist = new ArrayList<Useracc>();
-	
+	ArrayList<Moderation> blocklist = new ArrayList<Moderation>();
+
 	private String email;
-	private String password; 
+	private String password;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -33,19 +34,20 @@ public class CAOS {
 		c1.start();
 
 	}
-	
 
 	public void start() {
 
 		settingup();
 
-		int firstoption = -1;
 		int buyersoption = -1;
 		int sellerfirstopt = -1;
+		int mainopt = -1;
 
-		while (firstoption != 3) {
+		while (mainopt != 4) {
 
-			if (signinmenu() == 1) {
+			mainopt = signinmenu();
+			
+			if (mainopt == 1) {
 
 				Helper.line(50, "~");
 				System.out.println("LOG IN");
@@ -74,11 +76,109 @@ public class CAOS {
 
 							sellermenu();
 							sellerfirstopt = Helper.readInt("Enter option: ");
-							
+
 							sellersopt(sellerfirstopt);
 
 						}
 
+					} else if (rolechecker(email) == 3) {
+						
+						int adminmenu = -1;
+						
+						while (adminmenu != 5) {
+							
+							adminmenu();
+							
+							adminmenu = Helper.readInt("Enter option > ");
+							
+							if (adminmenu == 1) {
+								
+								viewtransac();
+								
+							} else if (adminmenu == 2) {
+								
+								if (addadmin() == true) {
+									
+									System.out.println("Successful Added! Welcome to CAOS Family ");
+									
+								} else { 
+									
+									System.out.println("Username/Email is Duplicated/Blocked");
+								}
+								
+							} else if (adminmenu == 3) {
+								
+								int currentsize = blocklist.size();
+								
+								Helper.line(50, "~");
+								System.out.println("MODERATION");
+								Helper.line(50, "~");
+								
+								System.out.println("");
+								
+								String banusername = Helper.readString("Enter the username you want to ban > ");
+								String banuseremail = Helper.readString("Enter the email you want to ban > ");
+								String modemail = email;
+								String banreason = Helper.readString("Enter reason: ");
+								LocalDate currenttime = LocalDate.now();
+								
+								if (isbanned(banusername, banuseremail) == true) {
+									
+									Moderation m1 = new Moderation(banusername, banuseremail, modemail, banreason, currenttime);
+									blocklist.add(m1);
+									
+									if(currentsize != blocklist.size()) {
+										
+										System.out.println("Successful Ban. User: " + banusername);
+										
+									} else { 
+										
+										System.out.println("Failed to Ban User: " + banusername);
+										
+									}
+									
+								} else { 
+									
+									System.out.println("Failed to Ban User: " + banusername);
+									
+								}
+								
+							} else if (adminmenu == 4) {
+								
+								int currentsize = userlist.size();
+								
+								Helper.line(50, "~");
+								System.out.println("MODERATION");
+								Helper.line(50, "~");
+								
+								System.out.println("");
+								
+								String deleteusername = Helper.readString("Enter the username you want to delete > ");
+								String deleteuseremail = Helper.readString("Enter the email you want to delete > ");
+								
+								if (isdelete(deleteusername, deleteuseremail) == true) {
+									
+									if (currentsize != userlist.size()) {
+										
+										System.out.println("Delete Successful!");
+										
+									} else { 
+										
+										System.out.println("Delete Failed");
+										
+									}
+									
+								} else { 
+									
+									System.out.println("Delete Failed");
+									
+								}
+								
+							}
+
+	
+						}
+						
 					}
 
 				} else {
@@ -87,12 +187,343 @@ public class CAOS {
 
 				}
 
+			} else if (mainopt == 2) {
+
+				int accregopt = newaccmenu();
+				
+				String newemail = Helper.readString("Enter email address > ");
+				String newusername = Helper.readString("Enter username > ");
+
+				if (accregopt == 1) {
+
+					if (buyermenu(newemail, newusername) == true) {
+
+						System.out.println("Successful Added! Welcome to CAOS Family " + newusername);
+						System.out.println("Please relogin. ");
+
+					} else { 
+						
+						System.out.println("Username/Email Duplicated");
+					}
+
+				} else if (accregopt == 2) {
+					
+					if (sellermenu(newemail, newusername) == true) {
+						
+						System.out.println("Successful Added! Welcome to CAOS Family " + newusername);
+						System.out.println("Please relogin. ");
+						
+					} else { 
+						
+						System.out.println("Username/Email Duplicated");
+					}
+					
+				} else if (accregopt == 3) {
+					
+					System.out.println("Exiting Registration");
+					
+				} else { 
+					
+					System.out.println("Invalid user input.");
+					
+				}
+
+			} else if (mainopt == 3) {
+				
+				viewAll();
+				
+			} else if (mainopt == 4) {
+				
+				System.out.println("Thanks for using CAOS Software");
+				
+			} else { 
+				
+				System.out.println("Invalid user input");
 			}
 
 		}
 
 	}
 	
+	public boolean isdelete(String username, String email) {
+		
+		boolean isdelete = false;
+		
+		for (int i = 0; i < userlist.size(); i++) {
+			
+			if (userlist.get(i).getEmail().equalsIgnoreCase(email) && userlist.get(i).getUsername().equalsIgnoreCase(username)) {
+				
+				userlist.remove(i);
+				isdelete = true;
+				
+			}
+		}
+		
+		return isdelete;
+		
+	}
+	
+	public boolean isbanned(String username, String email) {
+		
+		boolean isban = false;
+		
+		for (Moderation i : blocklist) {
+			
+			if (i.getUsername().equals(username) && i.getEmail().equals(email)) {
+				
+				isban = true;
+				
+			}
+		}
+		
+		return isban;
+		
+	}
+	
+	public boolean addadmin() {
+		
+		boolean successadd = false;
+		boolean isfound = true;
+		int currentsize = userlist.size();
+		
+		Helper.line(50, "~");
+		System.out.println("REGISTER NEW ACCOUNT");
+		Helper.line(50, "~");
+
+		System.out.println("");
+		
+		String email = Helper.readString("Enter email address > ");
+		String username = Helper.readString("Enter username > ");
+		
+		for (Useracc i : userlist) {
+
+			if (i.getEmail().equalsIgnoreCase(email) && i.getUsername().equalsIgnoreCase(username) ) {
+				
+				for (Moderation x : blocklist) {
+					
+					if (x.getEmail().equalsIgnoreCase(email) && i.getUsername().equalsIgnoreCase(username)) {
+						
+						isfound = true;
+						break;
+						
+					}	
+					
+				}
+				
+			} else { 
+				
+				isfound = false; 
+			}
+		}
+
+		if (isfound == false) {
+
+			boolean pwconfirm = false;
+
+			String newpw = Helper.readString("Enter new password > ");
+			String newpw1 = Helper.readString("Enter password again > ");
+
+			if (newpw.equals(newpw1)) {
+
+				pwconfirm = true;
+
+			}
+
+			if (pwconfirm = true) {
+
+				Useracc b1 = new Useracc(username, "Admin", email, newpw);
+				userlist.add(b1);
+
+				if (currentsize != userlist.size()) {
+
+					successadd = true;
+
+				}
+
+			}
+
+		} 
+
+		return successadd;
+		
+	}
+	
+	public void viewtransac() {
+		
+		try { 
+		
+			File file = new File("transaction.txt");
+			Scanner sc = new Scanner(file);
+		
+			while (sc.hasNextLine()) {
+
+				System.out.println(sc.nextLine());
+
+			}
+
+			sc.close();
+
+		} catch (FileNotFoundException e) {
+
+			System.out.println("The file could not be found :(");
+			e.printStackTrace();
+
+		}
+	}
+	
+	public void adminmenu() {
+		
+		Helper.line(50, "~");
+		System.out.println("ADMINSTRATOR MENU");
+		Helper.line(50, "~");
+		System.out.println("");
+		System.out.println("1. View Transaction Records");
+		System.out.println("2. Add Adminstrator");
+		System.out.println("3. Ban User Account");
+		System.out.println("4. Delete User Account");
+		System.out.println("5. Exit");
+		System.out.println("");
+		
+	}
+	
+	public boolean sellermenu(String newemail, String newusername) {
+		
+		boolean successadd = false;
+		boolean isfound = true;
+		int currentsize = userlist.size();
+
+		for (Useracc i : userlist) {
+
+			if (i.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername)) {
+				
+				for (Moderation x : blocklist) {
+					
+					if (x.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername)) {
+						
+						isfound = true;
+						break;
+						
+					}
+				}
+
+			} else { 
+				
+				isfound = false; 
+			}
+		}
+
+		if (isfound == false) {
+
+			boolean pwconfirm = false;
+
+			String newpw = Helper.readString("Enter new password > ");
+			String newpw1 = Helper.readString("Enter password again > ");
+
+			if (newpw.equals(newpw1)) {
+
+				pwconfirm = true;
+
+			}
+
+			if (pwconfirm = true) {
+
+				Useracc b1 = new Useracc(newusername, "Seller", newemail, newpw);
+				userlist.add(b1);
+
+				if (currentsize != userlist.size()) {
+
+					successadd = true;
+
+				}
+
+			}
+
+		} 
+
+		return successadd;
+
+		
+		
+	}
+
+	public boolean buyermenu(String newemail, String newusername) {
+
+		boolean successadd = false;
+		boolean isfound = true;
+		int currentsize = userlist.size();
+
+		for (Useracc i : userlist) {
+
+			if (i.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername) ) {
+				
+				for (Moderation x : blocklist) {
+					
+					if (x.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername)) {
+						
+						isfound = true;
+						break;
+						
+					}
+					
+				}
+				
+			} else { 
+				
+				isfound = false; 
+			}
+		}
+
+		if (isfound == false) {
+
+			boolean pwconfirm = false;
+
+			String newpw = Helper.readString("Enter new password > ");
+			String newpw1 = Helper.readString("Enter password again > ");
+
+			if (newpw.equals(newpw1)) {
+
+				pwconfirm = true;
+
+			}
+
+			if (pwconfirm = true) {
+
+				Useracc b1 = new Useracc(newusername, "Buyer", newemail, newpw);
+				userlist.add(b1);
+
+				if (currentsize != userlist.size()) {
+
+					successadd = true;
+
+				}
+
+			}
+
+		} 
+
+		return successadd;
+
+	}
+
+	public int newaccmenu() {
+
+		Helper.line(50, "~");
+		System.out.println("REGISTER NEW ACCOUNT");
+		Helper.line(50, "~");
+
+		System.out.println("");
+
+		System.out.println("1. Buyer");
+		System.out.println("2. Seller");
+		System.out.println("3. Exit!");
+
+		System.out.println("");
+
+		int option = Helper.readInt("Enter option > ");
+
+		return option;
+	}
+
 	public void sellersopt(int sellerfirstopt) {
 
 		if (sellerfirstopt == 1) {
@@ -262,9 +693,8 @@ public class CAOS {
 
 					if (foundacc == true) {
 
-						Item or = new Item(selleruser, sellerpassword, selleremail, newitemname,
-								newitemdesc, newstartprice, formatstartdate, formatenddate,
-								bidincreament, newcat1, sellerrole);
+						Item or = new Item(selleruser, sellerpassword, selleremail, newitemname, newitemdesc,
+								newstartprice, formatstartdate, formatenddate, bidincreament, newcat1, sellerrole);
 
 						itemlist.add(or);
 
@@ -298,8 +728,7 @@ public class CAOS {
 
 				for (Item i : itemlist) {
 
-					if (i.getItemname().equalsIgnoreCase(deleteitem)
-							&& i.getEmail().equals(email)) {
+					if (i.getItemname().equalsIgnoreCase(deleteitem) && i.getEmail().equals(email)) {
 
 						isfound = true;
 
@@ -329,11 +758,10 @@ public class CAOS {
 
 							System.out.println(newcat);
 
-							char confirmdelete = Helper
-									.readChar("Please type Y if confirmed else N : ");
+							char confirmdelete = Helper.readChar("Please type Y if confirmed else N : ");
 
 							if (confirmdelete == 'Y' || confirmdelete == 'y') {
-								
+
 								itemlist.remove(i);
 
 								if (currentsize != itemlist.size()) {
@@ -372,8 +800,7 @@ public class CAOS {
 
 				for (Item i : itemlist) {
 
-					if (i.getItemname().equalsIgnoreCase(updateitemname)
-							&& i.getEmail().equals(email)) {
+					if (i.getItemname().equalsIgnoreCase(updateitemname) && i.getEmail().equals(email)) {
 
 						isfound = true;
 
@@ -381,21 +808,20 @@ public class CAOS {
 				}
 
 				if (isfound == true) {
-					
+
 					System.out.println("");
 
 					Helper.line(50, "~");
 					System.out.println("Item MANAGEMENT");
 					Helper.line(50, "~");
-					
+
 					sellerupdate();
-					
+
 					int option = Helper.readInt("Enter which option you want to update: ");
 
 					for (Item i : itemlist) {
 
-						if (i.getItemname().equalsIgnoreCase(updateitemname)
-								&& i.getEmail().equals(email)) {
+						if (i.getItemname().equalsIgnoreCase(updateitemname) && i.getEmail().equals(email)) {
 
 							if (option == 1) {
 
@@ -404,57 +830,57 @@ public class CAOS {
 								isupdated = true;
 
 							} else if (option == 2) {
-								
+
 								String itemnewdesc = Helper.readString("Enter new item description > ");
 								i.setItemdesc(itemnewdesc);
 								isupdated = true;
-								
+
 							} else if (option == 3) {
-								
+
 								double itemnewbidincreament = Helper.readDouble("Enter new Bid Increament > ");
 								i.setBidincreament(itemnewbidincreament);
 								isupdated = true;
-								
+
 							} else if (option == 4) {
-								
+
 								String itemnewenddate = Helper.readString("Enter new item end date(yyyy-mm-dd) > ");
 								LocalDate formatenddate = LocalDate.parse(itemnewenddate);
 								i.setEnddate(formatenddate);
 								isupdated = true;
-								
+
 							} else if (option == 5) {
-								
+
 								System.out.println("Going Back...");
-								
-							} else { 
-								
+
+							} else {
+
 								System.out.println("Invalid option inputted!");
-								
+
 							}
 
 						}
 
 					}
-					
+
 					if (isupdated == true) {
-						
+
 						System.out.println("Successful Update");
-						
-					} 
-					
-				} else { 
-					
+
+					}
+
+				} else {
+
 					System.out.println("Invalid Item Name");
-					
+
 				}
 			}
 
 		}
-		
+
 	}
-	
-	public void buyersopt(int buyersoption ) {
-		
+
+	public void buyersopt(int buyersoption) {
+
 		if (buyersoption == 1) {
 
 			String output = "";
@@ -490,7 +916,7 @@ public class CAOS {
 						Helper.line(50, "-");
 						output += "Name: " + i.getItemname() + "\n";
 						output += "Description: " + i.getItemdesc() + "\n";
-						output += "Current Price: $" + i.getCurrentprice() + "\n";
+						output += "Current Price: $" + i.getHighestprice() + "\n";
 						output += "Auction Start Date: " + i.getStartdate() + "\n";
 						output += "Auction End Date: " + i.getEnddate() + "\n";
 						output += "Bid Increament: $" + i.getBidincreament() + "\n";
@@ -557,13 +983,12 @@ public class CAOS {
 
 						bidprice = i.getHighestprice() + i.getBidincreament();
 
-						char authorise = Helper.readChar("Do you want to bid for " + i.getItemname()
-								+ " at a price of" + "  $" + bidprice + " ? (Y/N)");
+						char authorise = Helper.readChar("Do you want to bid for " + i.getItemname() + " at a price of"
+								+ "  $" + bidprice + " ? (Y/N)");
 
 						if (authorise == 'Y' || authorise == 'y') {
 
-							if (transaclog(i.getUsername(), i.getEmail(), i.getItemname(),
-									bidprice) == true) {
+							if (transaclog(i.getUsername(), i.getEmail(), i.getItemname(), bidprice) == true) {
 
 								i.setHighestprice(bidprice);
 
@@ -606,7 +1031,7 @@ public class CAOS {
 			System.out.println("Invalid option input");
 
 		}
-		
+
 	}
 
 	public void settingup() {
@@ -620,12 +1045,17 @@ public class CAOS {
 
 		Useracc b1 = new Useracc("William123", "Buyer", "William@gmail.com", "1234");
 		Useracc b2 = new Useracc("Jy123", "Buyer", "Jy123@gmail.com", "1234");
+		
+		String date = "2022-07-31";
+		Moderation m1 = new Moderation("Barney12", "Barney12@gmail.com", "darrenlee", "Being a child", LocalDate.parse(date));
 
 		userlist.add(a1);
 		userlist.add(b1);
 		userlist.add(b2);
 		userlist.add(s1);
 		userlist.add(s2);
+		
+		blocklist.add(m1);
 
 		// Adding Items
 
@@ -641,7 +1071,7 @@ public class CAOS {
 		// Adding category
 
 		catlist.add("Household");
-		catlist.add("Motor Vehicles");
+		catlist.add("Safety");
 
 	}
 
@@ -697,7 +1127,8 @@ public class CAOS {
 
 		System.out.println("1. Sign in Account!");
 		System.out.println("2. Sign up Account!");
-		System.out.println("3. Exit!");
+		System.out.println("3. View all Auction Items");
+		System.out.println("4. Exit!");
 
 		Helper.line(50, "~");
 
@@ -766,13 +1197,12 @@ public class CAOS {
 			count++;
 			System.out.println("");
 
-			System.out.println("Item Details " + i);
 			System.out.println("Name: " + i.getItemname());
 			System.out.println("Description: " + i.getItemdesc());
 			System.out.println("Current Price: $" + i.getCurrentprice());
 			System.out.println("Auction Start Date: " + i.getStartdate());
 			System.out.println("Auction End Date: " + i.getEnddate());
-			System.out.println("Bid Increament: " + i.getBidincreament());
+			System.out.println("Bid Increament: " + i.getBidincreament() + "\n");
 
 		}
 
@@ -836,7 +1266,7 @@ public class CAOS {
 			FileWriter fw = new FileWriter(file, true);
 			BufferedWriter bw = new BufferedWriter(fw);
 
-			bw.write(output);
+			bw.write(output + "\n");
 			bw.close();
 
 			System.out.println("Payment Successful!");

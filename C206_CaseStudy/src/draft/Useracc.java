@@ -10,7 +10,6 @@ package draft;
 
 /**
  * @author 21013223
- * 
  *
  */
 public class Useracc {
@@ -19,6 +18,7 @@ public class Useracc {
 	private String password;
 	private String email;
 	private String role;
+	
 	public String getRole() {
 		return role;
 	}
@@ -28,8 +28,6 @@ public class Useracc {
 	}
 
 	private double ratings; 
-	
-	// buyer 
 	
 	public Useracc(String username, String role, String email , String password) { // Buyer  & Admin
 		

@@ -46,7 +46,7 @@ public class CAOS {
 		while (mainopt != 4) {
 
 			mainopt = signinmenu();
-			
+
 			if (mainopt == 1) {
 
 				Helper.line(50, "~");
@@ -56,7 +56,7 @@ public class CAOS {
 				email = Helper.readString("Enter email: ");
 				password = Helper.readString("Enter password: ");
 
-				if (login(email, password) == true) {
+				if (acclogin(email, password) == true) {
 
 					if (rolechecker(email) == 1) { // checker role0
 
@@ -82,103 +82,103 @@ public class CAOS {
 						}
 
 					} else if (rolechecker(email) == 3) {
-						
+
 						int adminmenu = -1;
-						
+
 						while (adminmenu != 5) {
-							
+
 							adminmenu();
-							
+
 							adminmenu = Helper.readInt("Enter option > ");
-							
+
 							if (adminmenu == 1) {
-								
+
 								viewtransac();
-								
+
 							} else if (adminmenu == 2) {
-								
+
 								if (addadmin() == true) {
-									
+
 									System.out.println("Successful Added! Welcome to CAOS Family ");
-									
-								} else { 
-									
+
+								} else {
+
 									System.out.println("Username/Email is Duplicated/Blocked");
 								}
-								
+
 							} else if (adminmenu == 3) {
-								
+
 								int currentsize = blocklist.size();
-								
+
 								Helper.line(50, "~");
 								System.out.println("MODERATION");
 								Helper.line(50, "~");
-								
+
 								System.out.println("");
-								
+
 								String banusername = Helper.readString("Enter the username you want to ban > ");
 								String banuseremail = Helper.readString("Enter the email you want to ban > ");
 								String modemail = email;
 								String banreason = Helper.readString("Enter reason: ");
 								LocalDate currenttime = LocalDate.now();
-								
+
 								if (isbanned(banusername, banuseremail) == true) {
-									
-									Moderation m1 = new Moderation(banusername, banuseremail, modemail, banreason, currenttime);
+
+									Moderation m1 = new Moderation(banusername, banuseremail, modemail, banreason,
+											currenttime);
 									blocklist.add(m1);
-									
-									if(currentsize != blocklist.size()) {
-										
+
+									if (currentsize != blocklist.size()) {
+
 										System.out.println("Successful Ban. User: " + banusername);
-										
-									} else { 
-										
+
+									} else {
+
 										System.out.println("Failed to Ban User: " + banusername);
-										
+
 									}
-									
-								} else { 
-									
+
+								} else {
+
 									System.out.println("Failed to Ban User: " + banusername);
-									
+
 								}
-								
+
 							} else if (adminmenu == 4) {
-								
+
 								int currentsize = userlist.size();
-								
+
 								Helper.line(50, "~");
 								System.out.println("MODERATION");
 								Helper.line(50, "~");
-								
+
 								System.out.println("");
-								
+
 								String deleteusername = Helper.readString("Enter the username you want to delete > ");
 								String deleteuseremail = Helper.readString("Enter the email you want to delete > ");
-								
+
 								if (isdelete(deleteusername, deleteuseremail) == true) {
-									
+
 									if (currentsize != userlist.size()) {
-										
+
 										System.out.println("Delete Successful!");
-										
-									} else { 
-										
+
+									} else {
+
 										System.out.println("Delete Failed");
-										
+
 									}
-									
-								} else { 
-									
+
+								} else {
+
 									System.out.println("Delete Failed");
-									
+
 								}
-								
+
 							}
 
-	
 						}
-						
+
 					}
 
 				} else {
@@ -190,129 +190,458 @@ public class CAOS {
 			} else if (mainopt == 2) {
 
 				int accregopt = newaccmenu();
-				
+
 				String newemail = Helper.readString("Enter email address > ");
 				String newusername = Helper.readString("Enter username > ");
 
 				if (accregopt == 1) {
 
-					if (buyermenu(newemail, newusername) == true) {
+					if (signup(newusername, newemail, mainopt) == true) {
 
 						System.out.println("Successful Added! Welcome to CAOS Family " + newusername);
 						System.out.println("Please relogin. ");
 
-					} else { 
-						
+					} else {
+
 						System.out.println("Username/Email Duplicated");
 					}
 
 				} else if (accregopt == 2) {
-					
-					if (sellermenu(newemail, newusername) == true) {
-						
+
+					if (signup(newusername, newemail, mainopt) == true) {
+
 						System.out.println("Successful Added! Welcome to CAOS Family " + newusername);
 						System.out.println("Please relogin. ");
-						
-					} else { 
-						
+
+					} else {
+
 						System.out.println("Username/Email Duplicated");
 					}
-					
+
 				} else if (accregopt == 3) {
-					
+
 					System.out.println("Exiting Registration");
-					
-				} else { 
-					
+
+				} else {
+
 					System.out.println("Invalid user input.");
-					
+
 				}
 
 			} else if (mainopt == 3) {
-				
+
 				viewAll();
-				
+
 			} else if (mainopt == 4) {
-				
+
 				System.out.println("Thanks for using CAOS Software");
-				
-			} else { 
-				
+
+			} else {
+
 				System.out.println("Invalid user input");
 			}
 
 		}
 
 	}
+
+	public void settingup() {
+
+		// Adding members
+
+		Useracc a1 = new Useracc("Darren123", "Admin", "darrenlee@rp.com", "1234");
+
+		Useracc s1 = new Useracc("Ali123", "Seller", "Ali@gmail.com", "1234");
+		Useracc s2 = new Useracc("Dickson123", "Seller", "PJ@gmail.com", "1234");
+
+		Useracc b1 = new Useracc("William123", "Buyer", "William@gmail.com", "1234");
+		Useracc b2 = new Useracc("Jy123", "Buyer", "Jy123@gmail.com", "1234");
+
+		String date = "2022-07-31";
+		Moderation m1 = new Moderation("Barney12", "Barney12@gmail.com", "darrenlee", "Being a child",
+				LocalDate.parse(date));
+
+		userlist.add(a1);
+		userlist.add(b1);
+		userlist.add(b2);
+		userlist.add(s1);
+		userlist.add(s2);
+
+		blocklist.add(m1);
+
+		// Adding Items
+
+		Item i1 = new Item("Ali123", "Ali@gmail.com", "Metal Straw", "It is very useful. ", 18.00, LocalDate.now(),
+				LocalDate.now().plusWeeks(2), 1.50, 19.50, "Household");
+
+		Item i2 = new Item("Dickson123", "PJ@gmail.com", "Condom", "It is user friendly. ", 17.20, LocalDate.now(),
+				LocalDate.now().plusDays(5), 1.00, 18.20, "Safety");
+
+		itemlist.add(i1);
+		itemlist.add(i2);
+
+		// Adding category
+
+		catlist.add("Household");
+		catlist.add("Safety");
+
+	}
+
+	public boolean acclogin(String email, String password) {
+
+		boolean isfound = false;
+
+		for (Useracc i : userlist) {
+
+			if (i.getEmail().equals(email) && i.getPassword().equals(password)) {
+
+				isfound = true;
+			}
+		}
+
+		return isfound;
+	}
+
+	public void viewAll() {
+
+		System.out.println("");
+
+		Helper.line(50, "~");
+		System.out.println("All Auctionable Items");
+		Helper.line(50, "~");
+
+		int count = 0;
+
+		for (Item i : itemlist) {
+			count++;
+			System.out.println("");
+
+			System.out.println("Name: " + i.getItemname());
+			System.out.println("Description: " + i.getItemdesc());
+			System.out.println("Current Price: $" + i.getCurrentprice());
+			System.out.println("Auction Start Date: " + i.getStartdate());
+			System.out.println("Auction End Date: " + i.getEnddate());
+			System.out.println("Bid Increament: " + i.getBidincreament() + "\n");
+
+		}
+
+		System.out.println("Total Number of auctionable items: " + count);
+	}
+
+	public void viewtransac() {
 	
+		try {
+	
+			File file = new File("transaction.txt");
+			Scanner sc = new Scanner(file);
+	
+			while (sc.hasNextLine()) {
+	
+				System.out.println(sc.nextLine());
+	
+			}
+	
+			sc.close();
+	
+		} catch (FileNotFoundException e) {
+	
+			System.out.println("The file could not be found :(");
+			e.printStackTrace();
+	
+		}
+	}
+
+	public void viewauctionbycategory() {
+	
+		String output = "";
+		Helper.line(50, "~");
+		System.out.println("");
+		boolean isfound = false;
+	
+		String catname = Helper.readString("Enter category name > ");
+	
+		for (String x : catlist) {
+	
+			if (x.equalsIgnoreCase(catname) == true) {
+	
+				for (Item i : itemlist) {
+	
+					if (i.getCategory().equalsIgnoreCase(catname)) {
+	
+						isfound = true;
+	
+					}
+				}
+			}
+		}
+	
+		if (isfound == true) {
+	
+			for (Item i : itemlist) {
+	
+				if (i.getCategory().equalsIgnoreCase(catname)) {
+	
+					isfound = true;
+					System.out.println("");
+					Helper.line(50, "-");
+					output += "Name: " + i.getItemname() + "\n";
+					output += "Description: " + i.getItemdesc() + "\n";
+					output += "Current Price: $" + i.getCurrentprice() + "\n";
+					output += "Auction Start Date: " + i.getStartdate() + "\n";
+					output += "Auction End Date: " + i.getEnddate() + "\n";
+					output += "Bid Increament: $" + i.getBidincreament() + "\n";
+					Helper.line(50, "-");
+					System.out.println("");
+	
+				}
+	
+			}
+	
+		} else {
+	
+			output = "Invalid Category inputted/ Null Values Returned ";
+	
+		}
+	
+		System.out.println(output);
+	
+	}
+
+	public void adminmenu() {
+
+		Helper.line(50, "~");
+		System.out.println("ADMINSTRATOR MENU");
+		Helper.line(50, "~");
+		System.out.println("");
+		System.out.println("1. View Transaction Records");
+		System.out.println("2. Add Adminstrator");
+		System.out.println("3. Ban User Account");
+		System.out.println("4. Delete User Account");
+		System.out.println("5. Exit");
+		System.out.println("");
+
+	}
+
+	public void sellermenu() {
+
+		Helper.line(50, "~");
+		System.out.println("Seller Menu");
+		Helper.line(50, "~");
+
+		System.out.println("1. View Auction by Category");
+		System.out.println("2. View My Auction");
+		System.out.println("3. Manage My Item Auction");
+		System.out.println("4. Exit!");
+
+		Helper.line(50, "~");
+
+	}
+
+	public void sellermenusecond() {
+	
+		Helper.line(50, "~");
+		System.out.println("Manage My Items");
+		Helper.line(50, "~");
+	
+		System.out.println("1. Add Auction Items");
+		System.out.println("2. Delete Auction Items");
+		System.out.println("3. Update Auction Items");
+		System.out.println("4. Exit!");
+	
+		Helper.line(50, "~");
+	
+	}
+
+	public void buyermenu() {
+
+		Helper.line(50, "~");
+		System.out.println("Buyer Menu");
+		Helper.line(50, "~");
+
+		System.out.println("1. View Auction by Category");
+		System.out.println("2. Place Bids");
+		System.out.println("3. View previous bids");
+		System.out.println("4. Exit!");
+
+		Helper.line(50, "~");
+
+	}
+
+	public int newaccmenu() {
+	
+		Helper.line(50, "~");
+		System.out.println("REGISTER NEW ACCOUNT");
+		Helper.line(50, "~");
+	
+		System.out.println("");
+	
+		System.out.println("1. Buyer");
+		System.out.println("2. Seller");
+		System.out.println("3. Exit!");
+	
+		System.out.println("");
+	
+		int option = Helper.readInt("Enter option > ");
+	
+		return option;
+	}
+
+	public int signinmenu() {
+
+		int firstoption = -1;
+
+		Helper.line(50, "~");
+		System.out.println("CAOS Software");
+		Helper.line(50, "~");
+
+		System.out.println("1. Sign in Account!");
+		System.out.println("2. Sign up Account!");
+		System.out.println("3. View all Auction Items");
+		System.out.println("4. Exit!");
+
+		Helper.line(50, "~");
+
+		firstoption = Helper.readInt("Enter option : ");
+
+		return firstoption;
+
+	}
+
 	public boolean isdelete(String username, String email) {
-		
+
 		boolean isdelete = false;
-		
+
 		for (int i = 0; i < userlist.size(); i++) {
-			
-			if (userlist.get(i).getEmail().equalsIgnoreCase(email) && userlist.get(i).getUsername().equalsIgnoreCase(username)) {
-				
+
+			if (userlist.get(i).getEmail().equalsIgnoreCase(email)
+					&& userlist.get(i).getUsername().equalsIgnoreCase(username)) {
+
 				userlist.remove(i);
 				isdelete = true;
-				
+
 			}
 		}
-		
+
 		return isdelete;
-		
+
 	}
-	
+
 	public boolean isbanned(String username, String email) {
-		
+
 		boolean isban = false;
-		
+
 		for (Moderation i : blocklist) {
-			
+
 			if (i.getUsername().equals(username) && i.getEmail().equals(email)) {
-				
+
 				isban = true;
-				
+
 			}
 		}
-		
+
 		return isban;
-		
+
 	}
-	
-	public boolean addadmin() {
-		
+
+	public boolean signup(String username, String email, int option) {
+
 		boolean successadd = false;
 		boolean isfound = true;
 		int currentsize = userlist.size();
-		
+		String newpw = "";
+
+		for (Useracc i : userlist) {
+
+			if (i.getEmail().equalsIgnoreCase(email) || i.getUsername().equalsIgnoreCase(username)) {
+
+				for (Moderation x : blocklist) {
+
+					if (x.getEmail().equalsIgnoreCase(email) || i.getUsername().equalsIgnoreCase(username)) {
+
+						isfound = true;
+						break;
+
+					}
+				}
+
+			} 
+
+		}
+
+		if (isfound == false) {
+			
+			newpw = Helper.readString("Enter new password > ");
+			String newpw1 = Helper.readString("Enter password again > ");
+
+			if (newpw.equals(newpw1) == true) {
+				
+				if (option == 1) {
+
+					Useracc b1 = new Useracc(username, "Buyer", email, newpw);
+					userlist.add(b1);
+
+					if (currentsize != userlist.size()) {
+
+						successadd = true;
+
+					}
+
+				} else if (option == 2) {
+
+					Useracc b1 = new Useracc(username, "Seller", email, newpw);
+					userlist.add(b1);
+
+					if (currentsize != userlist.size()) {
+
+						successadd = true;
+
+					}
+					
+				}
+
+			} else { 
+				
+				System.out.println("Invalid Password Match");
+			}
+
+		}
+
+		return successadd;
+	}
+
+	public boolean addadmin() {
+
+		boolean successadd = false;
+		boolean isfound = true;
+		int currentsize = userlist.size();
+
 		Helper.line(50, "~");
 		System.out.println("REGISTER NEW ACCOUNT");
 		Helper.line(50, "~");
 
 		System.out.println("");
-		
+
 		String email = Helper.readString("Enter email address > ");
 		String username = Helper.readString("Enter username > ");
-		
+
 		for (Useracc i : userlist) {
 
-			if (i.getEmail().equalsIgnoreCase(email) && i.getUsername().equalsIgnoreCase(username) ) {
-				
+			if (i.getEmail().equalsIgnoreCase(email) && i.getUsername().equalsIgnoreCase(username)) {
+
 				for (Moderation x : blocklist) {
-					
+
 					if (x.getEmail().equalsIgnoreCase(email) && i.getUsername().equalsIgnoreCase(username)) {
-						
+
 						isfound = true;
 						break;
-						
-					}	
-					
+
+					}
+
 				}
-				
-			} else { 
-				
-				isfound = false; 
+
+			} else {
+
+				isfound = false;
 			}
 		}
 
@@ -342,289 +671,67 @@ public class CAOS {
 
 			}
 
-		} 
-
-		return successadd;
-		
-	}
-	
-	public void viewtransac() {
-		
-		try { 
-		
-			File file = new File("transaction.txt");
-			Scanner sc = new Scanner(file);
-		
-			while (sc.hasNextLine()) {
-
-				System.out.println(sc.nextLine());
-
-			}
-
-			sc.close();
-
-		} catch (FileNotFoundException e) {
-
-			System.out.println("The file could not be found :(");
-			e.printStackTrace();
-
 		}
-	}
-	
-	public void adminmenu() {
-		
-		Helper.line(50, "~");
-		System.out.println("ADMINSTRATOR MENU");
-		Helper.line(50, "~");
-		System.out.println("");
-		System.out.println("1. View Transaction Records");
-		System.out.println("2. Add Adminstrator");
-		System.out.println("3. Ban User Account");
-		System.out.println("4. Delete User Account");
-		System.out.println("5. Exit");
-		System.out.println("");
-		
-	}
-	
-	public boolean sellermenu(String newemail, String newusername) {
-		
-		boolean successadd = false;
-		boolean isfound = true;
-		int currentsize = userlist.size();
-
-		for (Useracc i : userlist) {
-
-			if (i.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername)) {
-				
-				for (Moderation x : blocklist) {
-					
-					if (x.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername)) {
-						
-						isfound = true;
-						break;
-						
-					}
-				}
-
-			} else { 
-				
-				isfound = false; 
-			}
-		}
-
-		if (isfound == false) {
-
-			boolean pwconfirm = false;
-
-			String newpw = Helper.readString("Enter new password > ");
-			String newpw1 = Helper.readString("Enter password again > ");
-
-			if (newpw.equals(newpw1)) {
-
-				pwconfirm = true;
-
-			}
-
-			if (pwconfirm = true) {
-
-				Useracc b1 = new Useracc(newusername, "Seller", newemail, newpw);
-				userlist.add(b1);
-
-				if (currentsize != userlist.size()) {
-
-					successadd = true;
-
-				}
-
-			}
-
-		} 
-
-		return successadd;
-
-		
-		
-	}
-
-	public boolean buyermenu(String newemail, String newusername) {
-
-		boolean successadd = false;
-		boolean isfound = true;
-		int currentsize = userlist.size();
-
-		for (Useracc i : userlist) {
-
-			if (i.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername) ) {
-				
-				for (Moderation x : blocklist) {
-					
-					if (x.getEmail().equalsIgnoreCase(newemail) && i.getUsername().equalsIgnoreCase(newusername)) {
-						
-						isfound = true;
-						break;
-						
-					}
-					
-				}
-				
-			} else { 
-				
-				isfound = false; 
-			}
-		}
-
-		if (isfound == false) {
-
-			boolean pwconfirm = false;
-
-			String newpw = Helper.readString("Enter new password > ");
-			String newpw1 = Helper.readString("Enter password again > ");
-
-			if (newpw.equals(newpw1)) {
-
-				pwconfirm = true;
-
-			}
-
-			if (pwconfirm = true) {
-
-				Useracc b1 = new Useracc(newusername, "Buyer", newemail, newpw);
-				userlist.add(b1);
-
-				if (currentsize != userlist.size()) {
-
-					successadd = true;
-
-				}
-
-			}
-
-		} 
 
 		return successadd;
 
 	}
 
-	public int newaccmenu() {
+	public void viewmyauction() {
 
+		String output = "";
 		Helper.line(50, "~");
-		System.out.println("REGISTER NEW ACCOUNT");
-		Helper.line(50, "~");
-
 		System.out.println("");
+		boolean isfound = false;
 
-		System.out.println("1. Buyer");
-		System.out.println("2. Seller");
-		System.out.println("3. Exit!");
+		for (Item i : itemlist) {
 
-		System.out.println("");
+			if (i.getEmail().equalsIgnoreCase(email)) {
 
-		int option = Helper.readInt("Enter option > ");
-
-		return option;
-	}
-
-	public void sellersopt(int sellerfirstopt) {
-
-		if (sellerfirstopt == 1) {
-
-			String output = "";
-			Helper.line(50, "~");
-			System.out.println("");
-			boolean isfound = false;
-
-			String catname = Helper.readString("Enter category name > ");
-
-			for (String x : catlist) {
-
-				if (x.equalsIgnoreCase(catname) == true) {
-
-					for (Item i : itemlist) {
-
-						if (i.getCategory().equalsIgnoreCase(catname)) {
-
-							isfound = true;
-
-						}
-					}
-				}
+				isfound = true;
 			}
-
-			if (isfound == true) {
-
-				for (Item i : itemlist) {
-
-					if (i.getCategory().equalsIgnoreCase(catname)) {
-
-						isfound = true;
-						System.out.println("");
-						Helper.line(50, "-");
-						output += "Name: " + i.getItemname() + "\n";
-						output += "Description: " + i.getItemdesc() + "\n";
-						output += "Current Price: $" + i.getCurrentprice() + "\n";
-						output += "Auction Start Date: " + i.getStartdate() + "\n";
-						output += "Auction End Date: " + i.getEnddate() + "\n";
-						output += "Bid Increament: $" + i.getBidincreament() + "\n";
-						Helper.line(50, "-");
-						System.out.println("");
-
-					}
-
-				}
-
-			} else {
-
-				output = "Invalid Category inputted/ Null Values Returned ";
-
-			}
-
-			System.out.println(output);
-
-		} else if (sellerfirstopt == 2) {
-
-			String output = "";
-			Helper.line(50, "~");
-			System.out.println("");
-			boolean isfound = false;
+		}
+		if (isfound == true) {
 
 			for (Item i : itemlist) {
 
 				if (i.getEmail().equalsIgnoreCase(email)) {
 
 					isfound = true;
-
-				}
-			}
-
-			if (isfound == true) {
-
-				for (Item i : itemlist) {
-
-					if (i.getEmail().equalsIgnoreCase(email)) {
-
-						isfound = true;
-						System.out.println("");
-						Helper.line(50, "-");
-						output += "Name: " + i.getItemname() + "\n";
-						output += "Description: " + i.getItemdesc() + "\n";
-						output += "Current Price: $" + i.getCurrentprice() + "\n";
-						output += "Auction Start Date: " + i.getStartdate() + "\n";
-						output += "Auction End Date: " + i.getEnddate() + "\n";
-						output += "Bid Increament: $" + i.getBidincreament() + "\n";
-						Helper.line(50, "-");
-						System.out.println("");
-
-					}
+					System.out.println("");
+					Helper.line(50, "-");
+					output += "Name: " + i.getItemname() + "\n";
+					output += "Description: " + i.getItemdesc() + "\n";
+					output += "Current Price: $" + i.getCurrentprice() + "\n";
+					output += "Auction Start Date: " + i.getStartdate() + "\n";
+					output += "Auction End Date: " + i.getEnddate() + "\n";
+					output += "Bid Increament: $" + i.getBidincreament() + "\n";
+					Helper.line(50, "-");
+					System.out.println("");
 
 				}
 
-			} else {
-
-				output = "Invalid Category inputted/ Null Values Returned ";
-
 			}
 
-			System.out.println(output);
+		} else {
+
+			output = "Invalid Category inputted/ Null Values Returned ";
+
+		}
+
+		System.out.println(output);
+
+	}
+
+	public void sellersopt(int sellerfirstopt) {
+
+		if (sellerfirstopt == 1) {
+
+			viewauctionbycategory();
+
+		} else if (sellerfirstopt == 2) {
+
+			viewmyauction();
 
 		} else if (sellerfirstopt == 3) {
 
@@ -883,57 +990,7 @@ public class CAOS {
 
 		if (buyersoption == 1) {
 
-			String output = "";
-			Helper.line(50, "~");
-			System.out.println("");
-			boolean isfound = false;
-
-			String catname = Helper.readString("Enter category name > ");
-
-			for (String x : catlist) {
-
-				if (x.equalsIgnoreCase(catname) == true) {
-
-					for (Item i : itemlist) {
-
-						if (i.getCategory().equalsIgnoreCase(catname)) {
-
-							isfound = true;
-
-						}
-					}
-				}
-			}
-
-			if (isfound == true) {
-
-				for (Item i : itemlist) {
-
-					if (i.getCategory().equalsIgnoreCase(catname)) {
-
-						isfound = true;
-						System.out.println("");
-						Helper.line(50, "-");
-						output += "Name: " + i.getItemname() + "\n";
-						output += "Description: " + i.getItemdesc() + "\n";
-						output += "Current Price: $" + i.getHighestprice() + "\n";
-						output += "Auction Start Date: " + i.getStartdate() + "\n";
-						output += "Auction End Date: " + i.getEnddate() + "\n";
-						output += "Bid Increament: $" + i.getBidincreament() + "\n";
-						Helper.line(50, "-");
-						System.out.println("");
-
-					}
-
-				}
-
-			} else {
-
-				output = "Invalid Category inputted/ Null Values Returned ";
-
-			}
-
-			System.out.println(output);
+			viewauctionbycategory();
 
 		} else if (buyersoption == 2) {
 
@@ -1034,47 +1091,6 @@ public class CAOS {
 
 	}
 
-	public void settingup() {
-
-		// Adding members
-
-		Useracc a1 = new Useracc("Darren123", "Admin", "darrenlee@rp.com", "1234");
-
-		Useracc s1 = new Useracc("Ali123", "Seller", "Ali@gmail.com", "1234");
-		Useracc s2 = new Useracc("Dickson123", "Seller", "PJ@gmail.com", "1234");
-
-		Useracc b1 = new Useracc("William123", "Buyer", "William@gmail.com", "1234");
-		Useracc b2 = new Useracc("Jy123", "Buyer", "Jy123@gmail.com", "1234");
-		
-		String date = "2022-07-31";
-		Moderation m1 = new Moderation("Barney12", "Barney12@gmail.com", "darrenlee", "Being a child", LocalDate.parse(date));
-
-		userlist.add(a1);
-		userlist.add(b1);
-		userlist.add(b2);
-		userlist.add(s1);
-		userlist.add(s2);
-		
-		blocklist.add(m1);
-
-		// Adding Items
-
-		Item i1 = new Item("Ali123", "Ali@gmail.com", "Metal Straw", "It is very useful. ", 18.00, LocalDate.now(),
-				LocalDate.now().plusWeeks(2), 1.50, 19.50, "Household");
-
-		Item i2 = new Item("Dickson123", "PJ@gmail.com", "Condom", "It is user friendly. ", 17.20, LocalDate.now(),
-				LocalDate.now().plusDays(5), 1.00, 18.20, "Safety");
-
-		itemlist.add(i1);
-		itemlist.add(i2);
-
-		// Adding category
-
-		catlist.add("Household");
-		catlist.add("Safety");
-
-	}
-
 	public void sellerupdate() {
 
 		System.out.println("1. Item Name");
@@ -1115,116 +1131,6 @@ public class CAOS {
 		}
 
 		return role;
-	}
-
-	public int signinmenu() {
-
-		int firstoption = -1;
-
-		Helper.line(50, "~");
-		System.out.println("CAOS Software");
-		Helper.line(50, "~");
-
-		System.out.println("1. Sign in Account!");
-		System.out.println("2. Sign up Account!");
-		System.out.println("3. View all Auction Items");
-		System.out.println("4. Exit!");
-
-		Helper.line(50, "~");
-
-		firstoption = Helper.readInt("Enter option : ");
-
-		return firstoption;
-
-	}
-
-	public void buyermenu() {
-
-		Helper.line(50, "~");
-		System.out.println("Buyer Menu");
-		Helper.line(50, "~");
-
-		System.out.println("1. View Auction by Category");
-		System.out.println("2. Place Bids");
-		System.out.println("3. View previous bids");
-		System.out.println("4. Exit!");
-
-		Helper.line(50, "~");
-
-	}
-
-	public void sellermenu() {
-
-		Helper.line(50, "~");
-		System.out.println("Seller Menu");
-		Helper.line(50, "~");
-
-		System.out.println("1. View Auction by Category");
-		System.out.println("2. View My Auction");
-		System.out.println("3. Manage My Item Auction");
-		System.out.println("4. Exit!");
-
-		Helper.line(50, "~");
-
-	}
-
-	public void sellermenusecond() {
-
-		Helper.line(50, "~");
-		System.out.println("Manage My Items");
-		Helper.line(50, "~");
-
-		System.out.println("1. Add Auction Items");
-		System.out.println("2. Delete Auction Items");
-		System.out.println("3. Update Auction Items");
-		System.out.println("4. Exit!");
-
-		Helper.line(50, "~");
-
-	}
-
-	public void viewAll() {
-
-		System.out.println("");
-
-		Helper.line(50, "~");
-		System.out.println("All Auctionable Items");
-		Helper.line(50, "~");
-
-		int count = 0;
-
-		for (Item i : itemlist) {
-			count++;
-			System.out.println("");
-
-			System.out.println("Name: " + i.getItemname());
-			System.out.println("Description: " + i.getItemdesc());
-			System.out.println("Current Price: $" + i.getCurrentprice());
-			System.out.println("Auction Start Date: " + i.getStartdate());
-			System.out.println("Auction End Date: " + i.getEnddate());
-			System.out.println("Bid Increament: " + i.getBidincreament() + "\n");
-
-		}
-
-		System.out.println("Total Number of auctionable items: " + count);
-	}
-
-	public boolean login(String email, String password) {
-
-		boolean isfound = false;
-
-		for (Useracc i : userlist) {
-
-			if (i.getEmail().equals(email) && i.getPassword().equals(password)) {
-
-				isfound = true;
-
-			}
-
-		}
-
-		return isfound;
-
 	}
 
 	public boolean transaclog(String sellerusername, String selleremail, String itemname, double amt) {
@@ -1281,24 +1187,6 @@ public class CAOS {
 
 		return isauthorise;
 
-	}
-
-	public boolean viewcat(String catname) {
-
-		boolean isfound = false;
-
-		for (int i = 0; i < catlist.size(); i++) {
-
-			if (catlist.get(i).equalsIgnoreCase(catname)) {
-
-				isfound = true;
-			}
-
-		}
-
-		Helper.line(50, "~");
-
-		return isfound;
 	}
 
 }

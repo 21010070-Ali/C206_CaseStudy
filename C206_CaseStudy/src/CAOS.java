@@ -38,14 +38,13 @@ public class CAOS {
 	public void start() {
 
 		settingup();
-
-		int buyersoption = -1;
-		int sellerfirstopt = -1;
-		int sellersecondopt = -1;
-		int adminmenuopt = -1;
 		int signinoption = -1;
 
 		while (signinoption != 4) {
+			int buyersoption = -1;
+			int sellerfirstopt = -1;
+			int sellersecondopt = -1;
+			int adminmenuopt = -1;
 
 			signinmenu();
 			signinoption = Helper.readInt("Enter option: ");
@@ -71,16 +70,15 @@ public class CAOS {
 								placebidsbuyers();
 
 							} else if (buyersoption == 3) {
-								
+
 								if (viewtransac() == true) {
-									
+
 									System.out.println(viewtransac());
-									
-								} else { 
-									
+
+								} else {
+
 									System.out.println("Null/No transaction found.");
 								}
-								
 
 							} else if (buyersoption == 4) {
 
@@ -114,29 +112,25 @@ public class CAOS {
 								sellermenusecond();
 								sellersecondopt = Helper.readInt("Enter option: ");
 
-								while (sellersecondopt != 4) {
+								if (sellersecondopt == 1) {
 
-									if (sellersecondopt == 1) {
+									selleraddnewitem();
 
-										selleraddnewitem();
+								} else if (sellersecondopt == 2) {
 
-									} else if (sellersecondopt == 2) {
+									sellerdeleteitem();
 
-										sellerdeleteitem();
+								} else if (sellersecondopt == 3) {
 
-									} else if (sellersecondopt == 3) {
+									sellerupdateitem();
 
-										sellerupdateitem();
+								} else if (sellersecondopt == 4) {
 
-									} else if (sellersecondopt == 4) {
+									System.out.println("Exiting Out...");
 
-										System.out.println("Exiting Out...");
+								} else {
 
-									} else {
-
-										System.out.println("Invalid User Input");
-
-									}
+									System.out.println("Invalid User Input");
 
 								}
 
@@ -155,11 +149,11 @@ public class CAOS {
 							if (adminmenuopt == 1) {
 
 								if (viewtransac() == true) {
-									
+
 									System.out.println(viewtransac());
-									
-								} else { 
-									
+
+								} else {
+
 									System.out.println("Null/No records found");
 								}
 
@@ -203,10 +197,9 @@ public class CAOS {
 				}
 
 			} else if (signinoption == 2) {
-				
+
 				newaccmenu();
 				int accmenu = Helper.readInt("Enter option > ");
-
 
 				if (accmenu == 1) {
 
@@ -258,9 +251,9 @@ public class CAOS {
 		}
 
 	}
-	
+
 	public static boolean addingselleracc() {
-		
+
 		boolean successaddseller = false;
 		boolean isfound = false;
 		int currentsize = userlist.size();
@@ -306,7 +299,7 @@ public class CAOS {
 			}
 
 		}
-		
+
 		return successaddseller;
 	}
 
@@ -357,7 +350,7 @@ public class CAOS {
 			}
 
 		}
-		
+
 		return successaddbuyer;
 	}
 
@@ -866,8 +859,8 @@ public class CAOS {
 	}
 
 	public static boolean viewtransac() {
-		
-		boolean isfound = false; 
+
+		boolean isfound = false;
 
 		for (Bid i : bidlist) {
 
@@ -886,9 +879,9 @@ public class CAOS {
 			Helper.line(50, "~");
 			System.out.println("");
 			isfound = true;
-			
+
 		}
-		
+
 		return isfound;
 	}
 
@@ -910,7 +903,7 @@ public class CAOS {
 					if (i.getCategory().equalsIgnoreCase(catname)) {
 
 						isfound = true;
-						
+
 						for (Item z : itemlist) {
 
 							if (z.getCategory().equalsIgnoreCase(catname)) {
@@ -937,11 +930,10 @@ public class CAOS {
 		}
 
 		if (isfound != true) {
-			
+
 			output = "Invalid Category inputted/ Null Values Returned ";
 
 		}
-		
 
 		System.out.println(output);
 

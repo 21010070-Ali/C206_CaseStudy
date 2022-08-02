@@ -23,6 +23,7 @@ public class CAOS {
 	static ArrayList<Useracc> userlist = new ArrayList<Useracc>();
 	static ArrayList<Moderation> blocklist = new ArrayList<Moderation>();
 	static ArrayList<Bid> bidlist = new ArrayList<Bid>();
+	static ArrayList<Bid> deallist = new ArrayList<Bid>();
 
 	private static String email;
 	private static String password;
@@ -71,7 +72,7 @@ public class CAOS {
 
 							} else if (buyersoption == 3) {
 
-								if (viewtransac() == true) {
+								if (viewtransac().length() != 0) {
 
 									System.out.println(viewtransac());
 
@@ -126,12 +127,15 @@ public class CAOS {
 
 								} else if (sellersecondopt == 4) {
 
+									sellerclosedeal();
+
+								} else if (sellersecondopt == 5) {
+
 									System.out.println("Exiting Out...");
 
 								} else {
 
-									System.out.println("Invalid User Input");
-
+									System.out.println("Invalid i");
 								}
 
 							}
@@ -139,55 +143,111 @@ public class CAOS {
 						}
 
 					} else if (rolechecker(email) == 3) {
+						
+						int thirdadminopt = -1;
+						int secondadminopt = -1;
+						adminmenuopt = -1;
+						adminmenu();
+						
+						adminmenuopt = Helper.readInt("Enter option > ");
 
 						while (adminmenuopt != 5) {
-
-							adminmenu();
-
-							adminmenuopt = Helper.readInt("Enter option > ");
-
+							
 							if (adminmenuopt == 1) {
-
-								if (viewtransac() == true) {
-
+								
+								if (viewtransac().length() != 0) {
+									
 									System.out.println(viewtransac());
-
-								} else {
-
-									System.out.println("Null/No records found");
+									break;
+									
+								} else { 
+									
+									System.out.println("Null Value");
+									break;
 								}
-
+								
 							} else if (adminmenuopt == 2) {
-
-								if (addadmin() == true) {
-
-									System.out.println("Successful Added! Welcome to CAOS Family ");
-
-								} else {
-
-									System.out.println("Username/Email is Duplicated/Blocked");
+								
+								if (adminviewdeals().length() != 0) {
+									
+									System.out.println(adminviewdeals());
+									break;
+								
+								} else { 
+									
+									System.out.println("Null Value");
+									break;
 								}
-
+								
 							} else if (adminmenuopt == 3) {
-
-								adminblockuser();
-
+								
+								adminmanage();
+								secondadminopt = Helper.readInt("Enter option > ");
+								
+								if (secondadminopt == 1) {
+									
+									viewalluseradmin();
+									
+								} else if (secondadminopt == 2) {
+									
+									addadmin();
+									
+								} else if (secondadminopt == 3) {
+									
+									admindeleteuser();
+									
+								} else if (secondadminopt == 4) {
+									
+									adminblockuser();
+									
+								} else if (secondadminopt == 5) {
+									
+									System.out.println("Exiting...");
+									
+								} else { 
+									
+									System.out.println("Invalid option...");
+									
+								}
+								
 							} else if (adminmenuopt == 4) {
-
-								admindeleteuser();
-
+								
+								admincatmenu();
+								thirdadminopt = Helper.readInt("Enter option > ");
+								
+								if (thirdadminopt == 1) {
+									
+									addallcat();
+									
+								} else if (thirdadminopt == 2) {
+									
+									deletecat();
+									
+								} else if (thirdadminopt == 3) {
+									
+									viewallcat();
+									
+								} else if (thirdadminopt == 4) {
+									
+									System.out.println("Exiting...");
+									
+								} else { 
+									
+									System.out.println("Invalid option inputted.");
+									
+								}
+								
+								
 							} else if (adminmenuopt == 5) {
-
-								System.out.println("Logging out...");
-
-							} else {
-
-								System.out.println("Invalid option inputted");
-
+								
+								System.out.println("Logging Out...");
+								
+							} else { 
+								
+								System.out.println("Invalid user input.");
 							}
 
 						}
-
 					}
 
 				} else {
@@ -249,6 +309,272 @@ public class CAOS {
 			}
 
 		}
+
+	}
+	
+	
+	public static String viewmyauction() {
+	
+		String output = "";
+		Helper.line(50, "~");
+		System.out.println("");
+		boolean isfound = false;
+	
+		for (Item i : itemlist) {
+	
+			if (i.getEmail().equalsIgnoreCase(email)) {
+	
+				isfound = true;
+			}
+		}
+		if (isfound == true) {
+	
+			for (Item i : itemlist) {
+	
+				if (i.getEmail().equalsIgnoreCase(email)) {
+	
+					isfound = true;
+					System.out.println("");
+					Helper.line(50, "-");
+					output += "Name: " + i.getItemname() + "\n";
+					output += "Description: " + i.getItemdesc() + "\n";
+					output += "Current Price: $" + i.getCurrentprice() + "\n";
+					output += "Auction Start Date: " + i.getStartdate() + "\n";
+					output += "Auction End Date: " + i.getEnddate() + "\n";
+					output += "Bid Increament: $" + i.getBidincreament() + "\n";
+					Helper.line(50, "-");
+					System.out.println("");
+	
+				}
+	
+			}
+	
+		} else {
+	
+			output = "Invalid Category inputted/ Null Values Returned ";
+	
+		}
+	
+		System.out.println(output);
+	
+		return output;
+	
+	}
+
+	public static String adminviewdeals() {
+		
+		String output = "";
+		
+		for (int i = 0; i < deallist.size(); i++) {
+			
+			output += ("Bid ID: " + deallist.get(i).getBidid());
+			output += ("Item Name: " + deallist.get(i).getItemname());
+			output += ("Item Desc: " + deallist.get(i).getItemdesc());
+			output += ("Price: " + deallist.get(i).getHighestprice());
+			output += ("Seller Email: " + deallist.get(i).getEmail());
+			output += ("Seller Username: " + deallist.get(i).getUsername());
+			output += ("Buyer Email: " + deallist.get(i).getBuyeremail());
+			output += ("Buyer username: " + deallist.get(i).getBuyerusername());
+			output += ("");
+			
+		}
+		
+		return output;
+	}
+	
+	
+	public static boolean viewalluseradmin() {
+		
+		boolean isfound = false;
+		
+		for (int i = 0; i < userlist.size(); i++) {
+			
+			System.out.println("");
+			System.out.println("User " + i);
+			System.out.println("Username: " + userlist.get(i).getUsername());
+			System.out.println("User Email: " + userlist.get(i).getEmail());
+			System.out.println("User Role: " + userlist.get(i).getRole());
+			System.out.println("");
+			isfound = true;
+		}
+		
+		return isfound;
+	}
+
+	public static boolean isvalidatecat() {
+
+		boolean isfound = false;
+
+		for (Item i : itemlist) {
+
+			for (String x : catlist) {
+
+				if (i.getCategory().equalsIgnoreCase(email) && x.equalsIgnoreCase(x)) {
+
+					isfound = true;
+
+				}
+
+			}
+
+		}
+
+		return isfound;
+
+	}
+
+	public static boolean deletecat() {
+
+		boolean isdeleted = false;
+		int currentsize = itemlist.size();
+		boolean isfound = false;
+
+		String newcat = Helper.readString("Enter category > ");
+
+		for (String i : catlist) {
+
+			if (i.equalsIgnoreCase(newcat) == true) {
+
+				isfound = false;
+
+			}
+
+		}
+
+		if (isfound == false) {
+
+			catlist.remove(newcat);
+			
+			for (int i = 0; i < itemlist.size(); i++) {
+
+				if (itemlist.get(i).getCategory().equalsIgnoreCase(newcat)) {
+					
+					itemlist.remove(i);
+					
+				}
+			}
+			
+			if (currentsize != itemlist.size()) {
+				
+				System.out.println("Remove successful");
+				isdeleted = true;
+
+			}
+
+		} else {
+
+			System.out.println("Category Name existsed");
+
+		}
+
+		return isdeleted;
+
+	}
+
+	public static boolean addallcat() {
+
+		boolean isadded = false;
+
+		String newcat = Helper.readString("Enter category > ");
+
+		for (String i : catlist) {
+
+			if (i.equalsIgnoreCase(newcat) == false) {
+				System.out.println("Added successful");
+
+				isadded = true;
+				break;
+
+			}
+		}
+
+		if (isadded == true) {
+
+			catlist.add(newcat);
+
+		} else {
+
+			System.out.println("Category Name existsed");
+
+		}
+
+		return isadded;
+	}
+
+	public static boolean viewallcat() {
+
+		boolean isfound = false;
+
+		for (String i : catlist) {
+
+			System.out.println(i);
+			isfound = true;
+		}
+
+		return isfound;
+	}
+
+	public static boolean sellerclosedeal() {
+
+		boolean isclosed = false;
+		boolean isfound = false;
+		int currentsize = deallist.size();
+
+		String name = Helper.readString("Enter the item name you want to close > ");
+
+		for (Item i : itemlist) {
+
+			if (i.getItemname().equalsIgnoreCase(name)) {
+
+				int dealid = getdealid();
+
+				String buyeremail = Helper.readString("Enter your email > ");
+				String buyeruser = Helper.readString("Enter username > ");
+
+				for (Useracc x : userlist) {
+
+					if (x.getEmail().equalsIgnoreCase(buyeremail) && x.getUsername().equalsIgnoreCase(buyeruser)) {
+
+						isfound = true;
+
+					}
+
+				}
+
+				if (isfound == true) {
+
+					Bid t1 = new Bid(dealid, buyeremail, buyeruser, i.getEmail(), i.getUsername(), i.getItemname(),
+							i.getHighestprice(), i.getEnddate());
+
+					deallist.add(t1);
+
+					if (currentsize != deallist.size()) {
+
+						isclosed = true;
+						System.out.println("Deal is closed. Congrats!!");
+
+					} else {
+
+						System.out.println("Deal failed to closed. :(");
+
+					}
+
+				}
+
+			}
+
+		}
+
+		for (int i = 0; i < itemlist.size(); i++) {
+
+			if (itemlist.get(i).getItemname().equalsIgnoreCase(name)) {
+
+				itemlist.remove(i);
+
+			}
+		}
+
+		return isclosed;
 
 	}
 
@@ -772,9 +1098,11 @@ public class CAOS {
 
 		Useracc s1 = new Useracc("Ali123", "Seller", "Ali@gmail.com", "1234");
 		Useracc s2 = new Useracc("Dickson123", "Seller", "PJ@gmail.com", "1234");
+		Useracc s3 = new Useracc("1", "Seller", "1", "1");
 
 		Useracc b1 = new Useracc("William123", "Buyer", "William@gmail.com", "1234");
 		Useracc b2 = new Useracc("Jy123", "Buyer", "Jy123@gmail.com", "1234");
+		Useracc b3 = new Useracc("2", "Buyer", "2", "2");
 
 		String date = "2022-07-31";
 		Moderation m1 = new Moderation("Barney12", "Barney12@gmail.com", "darrenlee", "Being a child",
@@ -783,8 +1111,10 @@ public class CAOS {
 		userlist.add(a1);
 		userlist.add(b1);
 		userlist.add(b2);
+		userlist.add(b3);
 		userlist.add(s1);
 		userlist.add(s2);
+		userlist.add(s3);
 
 		blocklist.add(m1);
 
@@ -847,10 +1177,8 @@ public class CAOS {
 
 			output += "Name: " + i.getItemname() + "\n";
 			output += ("Description: " + i.getItemdesc()) + "\n";
-			output += ("Current Price: $" + i.getCurrentprice()) + "\n";
 			output += ("Auction Start Date: " + i.getStartdate()) + "\n";
 			output += ("Auction End Date: " + i.getEnddate()) + "\n";
-			output += ("Bid Increament: " + i.getBidincreament() + "\n");
 
 		}
 
@@ -858,31 +1186,49 @@ public class CAOS {
 		return output;
 	}
 
-	public static boolean viewtransac() {
+	public static boolean viewdealhistory() {
 
 		boolean isfound = false;
 
 		for (Bid i : bidlist) {
 
-			System.out.println("");
-			System.out.println("Category Name: " + i.getCategory());
-			Helper.line(50, "~");
-			System.out.println("Bid ID: " + i.getBidid());
-			System.out.println("Item Name: " + i.getItemname());
-			System.out.println("Item Desc: " + i.getItemdesc());
-			System.out.println("Seller Email: " + i.getEmail());
-			System.out.println("Seller Username: " + i.getUsername());
-			System.out.println("Seller Ratings: " + i.getRatings());
-			System.out.println("Buyer Email: " + i.getBuyeremail());
-			System.out.println("Buyer Username: " + i.getBuyerusername());
-			System.out.println("Paid: $" + i.getHighestprice());
-			Helper.line(50, "~");
-			System.out.println("");
 			isfound = true;
+			System.out.println("Deal ID: " + i.getBidid());
+			System.out.println("Item Name: " + i.getItemname());
+			System.out.println("Seller Email: " + i.getEmail());
+			System.out.println("Buyer Email: " + i.getBuyeremail());
+			System.out.println("Transaction Price: " + i.getHighestprice());
+			System.out.println("Close Date: " + i.getEnddate());
 
 		}
 
 		return isfound;
+	}
+
+	public static String viewtransac() {
+
+		String output = "";
+
+		for (Bid i : bidlist) {
+
+			output += ("");
+			output += ("Category Name: " + i.getCategory());
+			output += ("-------------------------------------");
+			output += ("Bid ID: " + i.getBidid());
+			output += ("Item Name: " + i.getItemname());
+			output += ("Item Desc: " + i.getItemdesc());
+			output += ("Seller Email: " + i.getEmail());
+			output += ("Seller Username: " + i.getUsername());
+			output += ("Seller Ratings: " + i.getRatings());
+			output += ("Buyer Email: " + i.getBuyeremail());
+			output += ("Buyer Username: " + i.getBuyerusername());
+			output += ("Paid: $" + i.getHighestprice());
+			output += ("-------------------------------------");
+			output += ("");
+
+		}
+
+		return output;
 	}
 
 	public void viewauctionbycategory() {
@@ -945,13 +1291,41 @@ public class CAOS {
 		System.out.println("ADMINSTRATOR MENU");
 		Helper.line(50, "~");
 		System.out.println("");
-		System.out.println("1. View Transaction Records");
-		System.out.println("2. Add Adminstrator");
-		System.out.println("3. Ban User Account");
-		System.out.println("4. Delete User Account");
+		System.out.println("1. View Bids Records");
+		System.out.println("2. View Deals Records");
+		System.out.println("3. Manage User ");
+		System.out.println("4. Manage Categories");
 		System.out.println("5. Exit");
 		System.out.println("");
 
+	}
+	
+	public static void adminmanage() {
+		
+		Helper.line(50, "~");
+		System.out.println("MANAGE USERS");
+		Helper.line(50, "~");
+		
+		System.out.println("1. View all Users ");
+		System.out.println("2. Add Adminstrator ");
+		System.out.println("3. Delete Users");
+		System.out.println("4. Ban User Account");
+		System.out.println("5. Exit");
+		
+	}
+
+	public static void admincatmenu() {
+
+		Helper.line(50, "~");
+		System.out.println("CATEGORY MENU");
+		Helper.line(50, "~");
+
+		System.out.println("");
+
+		System.out.println("1. Add Category");
+		System.out.println("2. Delete Category");
+		System.out.println("3. View Category");
+		System.out.println("4. Exit");
 	}
 
 	public static void sellermenu() {
@@ -978,7 +1352,8 @@ public class CAOS {
 		System.out.println("1. Add Auction Items");
 		System.out.println("2. Delete Auction Items");
 		System.out.println("3. Update Auction Items");
-		System.out.println("4. Exit!");
+		System.out.println("4. Closed Auction Deals");
+		System.out.println("5. Exit!");
 
 		Helper.line(50, "~");
 
@@ -1131,54 +1506,6 @@ public class CAOS {
 
 	}
 
-	public static String viewmyauction() {
-
-		String output = "";
-		Helper.line(50, "~");
-		System.out.println("");
-		boolean isfound = false;
-
-		for (Item i : itemlist) {
-
-			if (i.getEmail().equalsIgnoreCase(email)) {
-
-				isfound = true;
-			}
-		}
-		if (isfound == true) {
-
-			for (Item i : itemlist) {
-
-				if (i.getEmail().equalsIgnoreCase(email)) {
-
-					isfound = true;
-					System.out.println("");
-					Helper.line(50, "-");
-					output += "Name: " + i.getItemname() + "\n";
-					output += "Description: " + i.getItemdesc() + "\n";
-					output += "Current Price: $" + i.getCurrentprice() + "\n";
-					output += "Auction Start Date: " + i.getStartdate() + "\n";
-					output += "Auction End Date: " + i.getEnddate() + "\n";
-					output += "Bid Increament: $" + i.getBidincreament() + "\n";
-					Helper.line(50, "-");
-					System.out.println("");
-
-				}
-
-			}
-
-		} else {
-
-			output = "Invalid Category inputted/ Null Values Returned ";
-
-		}
-
-		System.out.println(output);
-
-		return output;
-
-	}
-
 	public static void sellerupdate() {
 
 		System.out.println("1. Item Name");
@@ -1280,7 +1607,7 @@ public class CAOS {
 
 	public static int getbidid() {
 
-		int highestbidid = 0;
+		int highestbidid = 1;
 
 		for (Bid i : bidlist) {
 
@@ -1293,6 +1620,21 @@ public class CAOS {
 		}
 
 		return highestbidid;
+	}
+
+	public static int getdealid() {
+
+		int highestdealid = 1;
+
+		for (Bid i : deallist) {
+
+			if (i.getDealid() > highestdealid)
+				;
+
+		}
+
+		return highestdealid;
+
 	}
 
 }

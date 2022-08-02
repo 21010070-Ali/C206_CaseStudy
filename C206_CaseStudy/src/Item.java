@@ -65,6 +65,16 @@ public class Item extends Useracc {
 		this.category = category;
 		
 	}
+	
+	public Item(String username, String email, String itemname, double highestprice, 
+			LocalDate enddate) {
+		
+		super(username, email);
+		this.itemname = itemname;
+		this.highestprice = highestprice;
+		this.enddate = enddate;
+		
+	}
 
 	public String getItemname() {
 		return itemname;

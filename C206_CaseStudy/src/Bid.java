@@ -18,6 +18,7 @@ public class Bid extends Item{
 	private int bidid;
 	private String buyeremail;
 	private String buyerusername;
+	private int dealid;
 	
 	public Bid(int bidid, String buyeremail, String buyerusername, String email, String username, String itemname, String itemdesc
 			, double highestprice, String category) {
@@ -28,6 +29,26 @@ public class Bid extends Item{
 		this.buyerusername = buyerusername;
 		
 	}
+	
+	public Bid(int dealid, String buyeremail, String buyerusername, String email, String username, String itemname,
+			double highestprice, LocalDate enddate) {
+		
+		super(username, email, itemname, highestprice, enddate);
+		this.dealid = dealid;
+		this.buyeremail = buyeremail;
+		this.buyerusername = buyerusername;
+		
+	}
+	
+
+	public int getDealid() {
+		return dealid;
+	}
+
+	public void setDealid(int dealid) {
+		this.dealid = dealid;
+	}
+
 
 	public int getBidid() {
 		return bidid;

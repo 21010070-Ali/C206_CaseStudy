@@ -56,6 +56,7 @@ public class C206_CaseStudyTest {
 
 	}
 
+	// Peng Jie test
 	@Test
 	public void testviewAll() {
 
@@ -69,88 +70,185 @@ public class C206_CaseStudyTest {
 	}
 
 	@Test
-	public void testaddingSelleracc() {
-		//To test a new account can be registered
-		assertTrue(CAOS.addingselleracc());
-		
-		//Test if password is not the same when entered again it returns false
-		assertFalse(CAOS.addingselleracc());
+	public void testselleraddnewitem() {
+		boolean itemsize = CAOS.selleraddnewitem();
+		String testOutput = "";
+		// Test if it is possible to add item if account is invalid
+		assertFalse(itemsize);
 	}
-	
+
+	@Test
+	public void testsellerdeleteitem() {
+		boolean itemdelete = CAOS.sellerdeleteitem();
+		String testOutput = "";
+		assertTrue(CAOS.sellerdeleteitem());
+	}
+
+	// Darren test
+	@Test
+	public void testaddingselleracc() {
+
+		// Test if userlist arraylist returns new seller account
+		assertNotNull("Test if there is valid user arraylist to add to", userlist);
+
+		// Test is account can be added to user arraylist
+		boolean accaddseller = CAOS.addingselleracc();
+		String testOutput = "";
+		assertFalse(accaddseller);
+	}
+
+	@Test
+	public void testaddingbuyeracc() {
+		// Test if userlist arraylist returns new buyer account
+		assertNotNull("Test if there is valid user arraylist to add to", userlist);
+
+		// Test is account can be added to user arraylist
+		boolean accaddbuyer = CAOS.addingbuyeracc();
+		String testOutput = "";
+		assertFalse(accaddbuyer);
+	}
+
+	@Test
+	public void testviewalluseradmin() {
+
+		// Test if viewalluseradmin not null
+		assertNotNull(CAOS.viewalluseradmin());
+
+		// test if the list of items from CAOS is not empty
+		boolean alladmin = CAOS.viewalluseradmin();
+		String testOutput = "";
+		assertNotEquals("Check that viewuseradmin", testOutput, alladmin);
+	}
+
+	// Ali test
+	@Test
+	public void testaddallcat() {
+		// Test if category arraylist returns not null
+		assertNotNull("Test if there is valid user arraylist to add to", catlist);
+
+		// Test if new category can be added to arraylist
+		boolean addcat = CAOS.addallcat();
+		String testOutput = "";
+		assertFalse(addcat);
+	}
+
+	@Test
+	public void testviewallcat() {
+
+		// Test if viewallcat not null
+		assertNotNull(CAOS.viewallcat());
+
+		// test if all category is not empty
+		boolean allcat = CAOS.viewallcat();
+		String testOutput = "";
+		assertNotEquals("Check that viewuseradmin", testOutput, allcat);
+	}
+
+	@Test
+	public void testdeletecat() {
+
+		// normal
+		CAOS.deletecat();
+		boolean isReturned = CAOS.deletecat();
+		assertTrue("Check that item delete - true", isReturned);
+
+		// error
+		isReturned = CAOS.deletecat();
+		assertFalse("Check that category delete - false?", isReturned);
+	}
+
+	// Junyi Test
+	@Test
+	public void testsellercloseddeal() {
+
+		// Write your code here
+		assertNotNull("Test if there is valid bidlist arraylist to add to", bidlist);
+		CAOS.sellerclosedeal();
+
+		// error
+		Boolean isReturned = CAOS.sellerclosedeal();
+		assertFalse("Test if deal is not close -false?", isReturned);
+
+		// normal
+		CAOS.selleraddnewitem();
+		isReturned = CAOS.sellerclosedeal();
+		assertTrue("Test if closed deal- true", isReturned);
+
+		// error
+		isReturned = CAOS.selleraddnewitem();
+		assertFalse("Test if non-existing amcorder CC0013 is returned - false?", isReturned);
+
+	}
+
+	@Test
+	public void testadmindeletedeal() {
+
+		// normal
+		CAOS.admindeletebid();
+		boolean isReturned = CAOS.sellerdeleteitem();
+		assertTrue("Check that item delete - true", isReturned);
+
+		// error
+		isReturned = CAOS.sellerdeleteitem();
+		assertFalse("Check that item delete - false?", isReturned);
+
+	}
+
+	@Test
+	public void testadminviewdeals() {
+		// Test if adminviewdeals not null
+		assertNotNull(CAOS.adminviewdeals());
+
+		// test if all transaction returned is not empty
+		String alldeals = CAOS.adminviewdeals();
+		String testOutput = "";
+		assertNotEquals("Check that adminviewdeals", testOutput, alldeals);
+	}
+
+	// William test
+	@Test
+	public void testadmindeletebid() {
+
+		// normal
+		CAOS.admindeletebid();
+		boolean isReturned = CAOS.admindeletebid();
+		assertTrue("Check that item delete - true", isReturned);
+
+		// error
+		isReturned = CAOS.sellerdeleteitem();
+		assertFalse("Check that item delete - false?", isReturned);
+
+	}
+
+	@Test
+	public void testplacebidsbuyers() {
+
+		// normal
+		CAOS.placebidsbuyers();
+
+		boolean isReturned = CAOS.admindeletebid();
+		assertTrue("Check that item delete - true", isReturned);
+
+		// error
+		isReturned = CAOS.sellerdeleteitem();
+		assertFalse("Check that item delete - false?", isReturned);
+
+	}
 
 	@Test
 	public void testviewtransac() {
-		
-		assertFalse(CAOS.viewtransac());
-		assertTrue(CAOS.viewtransac());
-	}
+		// Test if viewtransac not null
+		assertNotNull(CAOS.viewtransac());
 
-	@Test
-	public void testadmindeleteuser() {
-		//Test if the user
-		assertFalse(CAOS.admindeleteuser());
-	}
-
-	@Test
-	public void testadminblockuser() {
-		assertTrue(CAOS.adminblockuser());
-		assertFalse(CAOS.adminblockuser());
-
-	}
-	
-	@Test
-	public void testaddadmin() {
-		assertTrue(CAOS.addadmin());
-		assertFalse(CAOS.addadmin());
-	}
-	
-	@Test
-	public void testplacebidbuyers() {
-		
-		
-	}
-	
-	@Test
-	public void testsellerdeleteitem() {
-		assertTrue(CAOS.sellerdeleteitem());
-		assertFalse(CAOS.sellerdeleteitem());
-		
-		
-	}
-	
-	@Test
-	public void testisdelete() {
-		
-		String username = "Ali";
-		String email = "Ali@gmail.com";
-		assertTrue(CAOS.isdelete(username,email));
-		
-		String username1 = "aaa";
-		String email1 = "bbb";
-		assertFalse(CAOS.isdelete(username1, email1));
-	}
-	
-	@Test
-	public void testisbanned() {
-		String username = "Ali";
-		String email = "Ali@gmail.com";
-		assertFalse(CAOS.isbanned(username,email));
-		
-		String username1 = "aaa";
-		String email1 = "bbb";
-		assertTrue(CAOS.isbanned(username1, email1));
-		
-	}
-	
-	@Test
-	public void sellerupdateitem() {
-		assertTrue(CAOS.sellerupdateitem());
-		assertFalse(CAOS.sellerupdateitem());
+		// test if all transaction returned is not empty
+		String alltransac = CAOS.viewtransac();
+		String testOutput = "";
+		assertNotEquals("Check that viewuseradmin", testOutput, alltransac);
 	}
 
 	@After
 	public void tearDown() throws Exception {
-	
+
 		a1 = null;
 		s1 = null;
 		s2 = null;
@@ -161,7 +259,7 @@ public class C206_CaseStudyTest {
 		catlist = null;
 		blocklist = null;
 		bidlist = null;
-	
+
 	}
 
 }

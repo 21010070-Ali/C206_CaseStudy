@@ -179,7 +179,8 @@ public class CAOS {
 									
 								} else if (adminmenusecondopt == 2) {
 									
-									adminmanagebidmenu();
+									admindeletebid();
+									break;
 									
 								} else { 
 									
@@ -1490,8 +1491,8 @@ public class CAOS {
 
 		System.out.println("1. View Auction by Category");
 		System.out.println("2. Place Bids");
-		System.out.println("3. Delete Bids");
-		System.out.println("4. View previous bids");
+		System.out.println("3. View previous bids");
+		System.out.println("4. Delete Bids");
 		System.out.println("5. Exit!");
 
 		Helper.line(50, "~");

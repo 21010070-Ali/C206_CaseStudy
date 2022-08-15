@@ -56,7 +56,7 @@ public class CAOS {
 
 					if (rolechecker(email) == 1) { // checker role
 
-						while (buyersoption != 4) {
+						while (buyersoption != 5) {
 
 							buyermenu();
 
@@ -83,12 +83,15 @@ public class CAOS {
 
 							} else if (buyersoption == 4) {
 
+								admindeletebid();
+
+							} else if (buyersoption == 5){
+
 								System.out.println("Logging Out...");
 
 							} else {
-
-								System.out.println("Invalid option inputted");
-
+								
+								System.out.println("Invalid Input");
 							}
 
 						}
@@ -144,6 +147,7 @@ public class CAOS {
 
 					} else if (rolechecker(email) == 3) {
 						
+						int adminmenusecondopt = -1;
 						int adminmenopt = -1;
 						int thirdadminopt = -1;
 						int adminmenuoppt = -1;
@@ -158,9 +162,9 @@ public class CAOS {
 							if (adminmenuopt == 1) {
 								
 								adminmanagebidmenu();
-								adminmenuoppt = Helper.readInt("Enter option > ");
+								adminmenusecondopt = Helper.readInt("Enter option > ");
 								
-								if (adminmenuoppt == 1) {
+								if (adminmenusecondopt == 1) {
 									
 									if (viewtransac().length() != 0) {
 										
@@ -173,7 +177,7 @@ public class CAOS {
 										break;
 									}
 									
-								} else if (adminmenuoppt == 2) {
+								} else if (adminmenusecondopt == 2) {
 									
 									adminmanagebidmenu();
 									
@@ -837,19 +841,19 @@ public class CAOS {
 		for (Bid i : bidlist) {
 	
 			output += ("");
-			output += ("Category Name: " + i.getCategory());
-			output += ("-------------------------------------");
-			output += ("Bid ID: " + i.getBidid());
-			output += ("Item Name: " + i.getItemname());
-			output += ("Item Desc: " + i.getItemdesc());
-			output += ("Seller Email: " + i.getEmail());
-			output += ("Seller Username: " + i.getUsername());
-			output += ("Seller Ratings: " + i.getRatings());
-			output += ("Buyer Email: " + i.getBuyeremail());
-			output += ("Buyer Username: " + i.getBuyerusername());
-			output += ("Paid: $" + i.getHighestprice());
-			output += ("-------------------------------------");
-			output += ("");
+			output += ("Category Name: " + i.getCategory()+ "\n");
+			output += ("-------------------------------------"+ "\n");
+			output += ("Bid ID: " + i.getBidid()+ "\n");
+			output += ("Item Name: " + i.getItemname()+ "\n");
+			output += ("Item Desc: " + i.getItemdesc()+ "\n");
+			output += ("Seller Email: " + i.getEmail()+ "\n");
+			output += ("Seller Username: " + i.getUsername()+ "\n");
+			output += ("Seller Ratings: " + i.getRatings()+ "\n");
+			output += ("Buyer Email: " + i.getBuyeremail()+ "\n");
+			output += ("Buyer Username: " + i.getBuyerusername()+ "\n");
+			output += ("Paid: $" + i.getHighestprice()+ "\n");
+			output += ("-------------------------------------"+ "\n");
+			output += (""+ "\n");
 	
 		}
 	
@@ -957,15 +961,15 @@ public class CAOS {
 		
 		for (int i = 0; i < deallist.size(); i++) {
 			
-			output += ("Bid ID: " + deallist.get(i).getBidid());
-			output += ("Item Name: " + deallist.get(i).getItemname());
-			output += ("Item Desc: " + deallist.get(i).getItemdesc());
-			output += ("Price: " + deallist.get(i).getHighestprice());
-			output += ("Seller Email: " + deallist.get(i).getEmail());
-			output += ("Seller Username: " + deallist.get(i).getUsername());
-			output += ("Buyer Email: " + deallist.get(i).getBuyeremail());
-			output += ("Buyer username: " + deallist.get(i).getBuyerusername());
-			output += ("");
+			output += ("Bid ID: " + deallist.get(i).getBidid() + "\n");
+			output += ("Item Name: " + deallist.get(i).getItemname()+ "\n");
+			output += ("Item Desc: " + deallist.get(i).getItemdesc()+ "\n");
+			output += ("Price: " + deallist.get(i).getHighestprice()+ "\n");
+			output += ("Seller Email: " + deallist.get(i).getEmail()+ "\n");
+			output += ("Seller Username: " + deallist.get(i).getUsername()+ "\n");
+			output += ("Buyer Email: " + deallist.get(i).getBuyeremail()+ "\n");
+			output += ("Buyer username: " + deallist.get(i).getBuyerusername()+ "\n");
+			output += (""+ "\n");
 			
 		}
 		
@@ -1486,8 +1490,9 @@ public class CAOS {
 
 		System.out.println("1. View Auction by Category");
 		System.out.println("2. Place Bids");
-		System.out.println("3. View previous bids");
-		System.out.println("4. Exit!");
+		System.out.println("3. Delete Bids");
+		System.out.println("4. View previous bids");
+		System.out.println("5. Exit!");
 
 		Helper.line(50, "~");
 

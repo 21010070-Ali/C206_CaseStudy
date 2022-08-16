@@ -134,11 +134,15 @@ public class CAOS {
 
 								} else if (sellersecondopt == 5) {
 
+									System.out.println(adminviewdeals());
+
+								} else if (sellersecondopt == 6) {
+									
 									System.out.println("Exiting Out...");
-
-								} else {
-
-									System.out.println("Invalid i");
+									
+								} else { 
+									
+									System.out.println("Invalid");
 								}
 
 							}
@@ -1477,7 +1481,8 @@ public class CAOS {
 		System.out.println("2. Delete Auction Items");
 		System.out.println("3. Update Auction Items");
 		System.out.println("4. Closed Auction Deals");
-		System.out.println("5. Exit!");
+		System.out.println("5. View All Deals");
+		System.out.println("6. Exit!");
 
 		Helper.line(50, "~");
 
